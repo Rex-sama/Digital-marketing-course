@@ -8,13 +8,13 @@ const CourseDetails = () => {
       {/* <p className="mb-2 ">Our Digital Marketing Course is designed to provide you with the skills needed to excel in the digital marketing field. Topics covered include SEO, SEM, social media marketing, content marketing, and more.</p> */}
       <p className="mb-2 text-gray-600 leading-tight">
         Our comprehensive Digital Marketing Course is designed to be your
-        one-stop shop for success. We'll equip you with the in-demand skills you
+        one-stop shop for success. We&apos;ll equip you with the in-demand skills you
         need to skyrocket your online presence, dominate search engines, and
         convert website visitors into loyal customers.
       </p>
 
       <div className="border border-1 border-indigo-300 rounded-lg shadow-lg shadow-red-300/50 p-4 mt-5">
-        <h2 className="text-lg font-bold mb-4">What you'll learn</h2>
+        <h2 className="text-lg font-bold mb-4">What you&apos;ll learn</h2>
         <div className="grid sm:grid-cols-2 gap-2">
           <CourseText text={"SEO Techniques"} />
           <CourseText text={"Pay-Per-Click Advertising"} />
