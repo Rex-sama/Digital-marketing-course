@@ -4,6 +4,7 @@ import CountdownTimer from "./components/CountdownTimer";
 import CourseDetails from "./components/CourseDetails";
 import "./globals.css";
 import { calculateAge, validatePhone } from "./utils/validations";
+import Loader from "./components/Loader";
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -15,8 +16,9 @@ export default function Home() {
   });
   const [message, setMessage] = useState({ msg: "", color: "" });
   const [timesUp, setTimesUp] = useState(false);
-  const [error,setError] = useState("")
-  const [dobError,setDOBError] = useState("")
+  const [error, setError] = useState("");
+  const [dobError, setDOBError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -27,18 +29,20 @@ export default function Home() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(!validatePhone(formData.phone),formData.phone)
-    if(!validatePhone(formData.phone)){
-        setError("Invalid Phone number")
-        return
+    console.log(!validatePhone(formData.phone), formData.phone);
+    if (!validatePhone(formData.phone)) {
+      setError("Invalid Phone number");
+      return;
     }
-    setError("")
-    if(calculateAge(formData.dob) < 18){
-        setDOBError("Invalid Date: Must be 18 years or older.")
-        return
+    setError("");
+    if (calculateAge(formData.dob) < 18) {
+      setDOBError("Invalid Date: Must be 18 years or older.");
+      return;
     }
 
-    setDOBError("")
+    setDOBError("");
+    console.log(JSON.stringify(formData));
+    setLoading(true);
     const response = await fetch("/api/register", {
       method: "POST",
       headers: {
@@ -47,7 +51,7 @@ export default function Home() {
       body: JSON.stringify(formData),
     });
     const data = await response.json();
-   
+    setLoading(false);
     if (response.ok) {
       setMessage({ msg: "Registration successful!", color: "green" });
       setFormData({
@@ -58,11 +62,11 @@ export default function Home() {
         dob: "",
       });
     } else {
-      setMessage({ msg: data.error || "Something went wrong", color: "red" });
+      setMessage({ msg: data.message || "Something went wrong", color: "red" });
     }
   };
 
-  console.log(message)
+  console.log(message);
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center w-full bg-[url('../public/background.jpg')] ">
@@ -129,7 +133,7 @@ export default function Home() {
                   disabled={timesUp}
                   required
                 />
-                {error && <p className="text-red-800 text-sm">{error}</p>} 
+                {error && <p className="text-red-800 text-sm">{error}</p>}
               </div>
               <div>
                 <label className="block text-sm ">Date of Birth</label>
@@ -140,17 +144,17 @@ export default function Home() {
                   value={formData.dob}
                   onChange={handleChange}
                   disabled={timesUp}
-                  max={new Date().toISOString().split('T')[0]}
+                  max={new Date().toISOString().split("T")[0]}
                   required
                 />
-                 {dobError && <p className="text-red-800 text-sm">{dobError}</p>} 
+                {dobError && <p className="text-red-800 text-sm">{dobError}</p>}
               </div>
               <button
                 type="submit"
-                className="w-full bg-red-500 text-white p-2 rounded"
-                disabled={timesUp}
+                className={`w-full ${loading ? "bg-red-400" : "bg-red-500"} text-white p-2 rounded`}
+                disabled={timesUp || loading}
               >
-                Register
+                {loading ? <Loader /> : "Register"}
               </button>
             </form>
           </div>
