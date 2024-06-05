@@ -2,17 +2,12 @@
 
 For Backend:
 
-```bash
-cd backend
-npm install
+- cd backend
+- npm install
 
 
 For Frontend:
+- npm install
+- npm run dev
 
-```bash
-npm install
-
-npm run dev
-
-```
 
