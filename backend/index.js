@@ -2,18 +2,15 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const { Pool } = require("pg");
-const dotenv = require('dotenv');
-
-dotenv.config(); 
 const app = express();
-const port = process.env.PORT ||  5000;
+const port = 5000;
 
 const pool = new Pool({
-  user: process.env.DB_USER, 
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+  user: "postgres", 
+  host: "localhost",
+  database: "postgres",
+  password: "password",
+  port: 5432,
 });
 
 app.use(cors());
@@ -21,7 +18,7 @@ app.use(bodyParser.json());
 
 app.post("/register", async (req, res) => {
   const { first_name, last_name, email, phone, dob } = req.body;
-
+  
   if (!first_name || !last_name || !email || !phone || !dob) {
     return res.status(400).json({ error: "All fields are required" });
   }
